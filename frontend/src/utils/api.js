@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: "http://localhost:3004/api",
+  baseURL: "https://budgettracker-fgnd.onrender.com",
 });
 
 API.interceptors.request.use((config) => {
