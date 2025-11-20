@@ -33,34 +33,44 @@ const authSlice = createSlice({
     user: null,
     loading: false,
     error: null,
+    success: false,   // 👈🔥 IMPORTANT
   },
 
   reducers: {
     logout: (state) => {
       state.user = null;
+      state.success = false;
       localStorage.removeItem("token");
       toast.info("Logged out!", { position: "bottom-right" });
     },
+    resetAuthState: (state) => {   // 👈 redirect kazhinjal cleanup
+      state.error = null;
+      state.success = false;
+    }
   },
 
   extraReducers: (builder) => {
-   
+
+    // SIGNUP
     builder
       .addCase(signup.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.success = false;
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
+        state.success = true;   // 👈🔥 signup success
 
-        toast.success("Account created successfully",);
+        toast.success("Account created successfully");
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.msg;
+        state.success = false;
 
-        toast.error(action.payload.msg || "Signup failed!",);
+        toast.error(action.payload.msg || "Signup failed!");
       });
 
     // LOGIN
@@ -72,6 +82,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
+        state.success = true;
 
         toast.success("Logged in successfully!", {
           position: "bottom-right",
@@ -80,6 +91,7 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.msg;
+        state.success = false;
 
         toast.error(action.payload.msg || "Login failed!", {
           position: "bottom-right",
@@ -88,5 +100,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, resetAuthState } = authSlice.actions;
 export default authSlice.reducer;

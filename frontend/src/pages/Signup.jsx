@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signup } from "../redux/slices/authSlice";
+import { signup, resetAuthState } from "../redux/slices/authSlice";
 import { motion } from "framer-motion";
 import { MailIcon, LockIcon, UserIcon, AlertCircleIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const { loading, error, success } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
   });
-const navigate=useNavigate()
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -24,12 +26,14 @@ const navigate=useNavigate()
     e.preventDefault();
     dispatch(signup(form));
   };
+
+ 
   useEffect(() => {
-  if (!loading && !error) {
-    // signup success ayal redirect
-    navigate("/login");
-  }
-}, [loading, error, navigate]);
+    if (success) {
+      navigate("/login");
+      dispatch(resetAuthState()); 
+    }
+  }, [success, navigate, dispatch]);
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 px-4">
@@ -51,7 +55,7 @@ const navigate=useNavigate()
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Full Name */}
+       
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full Name
@@ -64,13 +68,14 @@ const navigate=useNavigate()
                 placeholder="Ajay Joseph"
                 value={form.name}
                 onChange={handleChange}
+                autoComplete="name"
                 className="w-full pl-10 p-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 outline-none"
                 required
               />
             </div>
           </div>
 
-        
+       
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -83,13 +88,14 @@ const navigate=useNavigate()
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={handleChange}
+                autoComplete="email"
                 className="w-full pl-10 p-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 outline-none"
                 required
               />
             </div>
           </div>
 
-       
+        
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -102,13 +108,14 @@ const navigate=useNavigate()
                 placeholder="••••••••"
                 value={form.password}
                 onChange={handleChange}
+                autoComplete="new-password"
                 className="w-full pl-10 p-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 outline-none"
                 required
               />
             </div>
           </div>
 
-      
+         
           <button
             type="submit"
             disabled={loading}
@@ -117,7 +124,7 @@ const navigate=useNavigate()
             {loading ? "Creating..." : "Sign Up"}
           </button>
 
-       
+         
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <a

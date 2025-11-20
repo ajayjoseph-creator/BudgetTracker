@@ -59,6 +59,7 @@ const navigate=useNavigate()
                 type="email"
                 name="email"
                 placeholder="you@example.com"
+                autoComplete="username"
                 value={form.email}
                 onChange={handleChange}
                 className="w-full pl-10 p-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 outline-none"
@@ -105,12 +106,18 @@ const navigate=useNavigate()
       
           <p className="text-center text-sm text-gray-600 mt-4">
             Don't have an account?{" "}
-            <button
-  onClick={() => navigate('/signup')}
+           <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();    
+    e.stopPropagation();    
+    navigate("/signup");
+  }}
   className="text-primary-600 hover:text-primary-500 font-medium cursor-pointer"
 >
   Sign up
 </button>
+
 
           </p>
         </form>
