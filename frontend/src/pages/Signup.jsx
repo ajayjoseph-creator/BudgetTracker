@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../redux/slices/authSlice";
 import { motion } from "framer-motion";
 import { MailIcon, LockIcon, UserIcon, AlertCircleIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export default function Signup() {
     email: "",
     password: "",
   });
-
+const navigate=useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -23,6 +24,12 @@ export default function Signup() {
     e.preventDefault();
     dispatch(signup(form));
   };
+  useEffect(() => {
+  if (!loading && !error) {
+    // signup success ayal redirect
+    navigate("/login");
+  }
+}, [loading, error, navigate]);
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 px-4">
@@ -63,7 +70,7 @@ export default function Signup() {
             </div>
           </div>
 
-          {/* Email */}
+        
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -82,7 +89,7 @@ export default function Signup() {
             </div>
           </div>
 
-          {/* Password */}
+       
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -101,7 +108,7 @@ export default function Signup() {
             </div>
           </div>
 
-          {/* Signup Button */}
+      
           <button
             type="submit"
             disabled={loading}
@@ -110,7 +117,7 @@ export default function Signup() {
             {loading ? "Creating..." : "Sign Up"}
           </button>
 
-          {/* Already have account? */}
+       
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <a

@@ -2,9 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-import Categories from "./pages/Categories";
-import Budgets from "./pages/Budgets";
-import Reports from "./pages/Reports";
 import PrivateRoute from "./components/PrivateRoute";
 import CategorySettings from "./pages/SettingsCategories";
 import BudgetTable from "./components/BudgetTable";
@@ -32,32 +29,8 @@ export default function App() {
           }
         />
 
-        <Route
-          path="/categories"
-          element={
-            <PrivateRoute>
-              <Categories />
-            </PrivateRoute>
-          }
-        />
 
-        <Route
-          path="/budgets"
-          element={
-            <PrivateRoute>
-              <Budgets />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/reports"
-          element={
-            <PrivateRoute>
-              <Reports />
-            </PrivateRoute>
-          }
-        />
+       
 
       </Routes>
     </BrowserRouter>

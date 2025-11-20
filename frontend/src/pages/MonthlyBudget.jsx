@@ -24,11 +24,11 @@ export default function MonthlyBudget() {
   const handleMonthChange = (e) => setMonth(e.target.value);
 
   const handleBack = () => window.history.back();
-  const handleAdd = () => alert("Add new category/expense!"); // Replace with modal logic
+ 
 
   return (
     <div className="min-h-screen p-6 bg-gray-50">
-      {/* Header */}
+    
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={handleBack}
@@ -40,16 +40,10 @@ export default function MonthlyBudget() {
 
         <h1 className="text-2xl font-bold text-gray-800">Monthly Budget</h1>
 
-        <button
-          onClick={handleAdd}
-          className="flex items-center gap-2 px-3 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition"
-        >
-          <Plus size={18} />
-          Add
-        </button>
+       
       </div>
 
-      {/* Month Selector */}
+  
       <div className="mb-6 flex items-center gap-4">
         <label className="font-medium text-gray-700">Select Month:</label>
         <input
@@ -60,12 +54,12 @@ export default function MonthlyBudget() {
         />
       </div>
 
-      {/* Loading */}
+  
       {loading && (
         <p className="text-center text-gray-500 mt-4">Loading...</p>
       )}
 
-      {/* Table */}
+     
       {!loading && summary.length > 0 && (
         <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 mb-8">
           <table className="w-full table-auto">

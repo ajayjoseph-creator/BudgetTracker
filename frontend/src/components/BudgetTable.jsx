@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategorySummary, updateCategory, addCategory, deleteCategory } from "../redux/slices/categorySlice";
-import { ArrowLeft, Plus, Edit2, X } from "lucide-react";
+import {
+  fetchCategorySummary,
+  updateCategory,
+  addCategory,
+  deleteCategory,
+} from "../redux/slices/categorySlice";
+
+import { ArrowLeft, Plus, Edit2, X, Home, PieChart, PlusCircle, Settings } from "lucide-react";
 
 export default function BudgetTable() {
   const dispatch = useDispatch();
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
   const { summary, loading } = useSelector((state) => state.category);
 
-  // Modal states
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); 
+  const [modalMode, setModalMode] = useState("add");
   const [selectedCat, setSelectedCat] = useState(null);
   const [catName, setCatName] = useState("");
   const [catColor, setCatColor] = useState("#000000");
@@ -41,9 +47,24 @@ export default function BudgetTable() {
     if (!catName || !catLimit) return;
 
     if (modalMode === "add") {
-      dispatch(addCategory({ name: catName, color: catColor, limit: Number(catLimit), month }));
-    } else if (modalMode === "edit") {
-      dispatch(updateCategory({ categoryId: selectedCat._id, name: catName, color: catColor, limit: Number(catLimit), month }));
+      dispatch(
+        addCategory({
+          name: catName,
+          color: catColor,
+          limit: Number(catLimit),
+          month,
+        })
+      );
+    } else {
+      dispatch(
+        updateCategory({
+          categoryId: selectedCat._id,
+          name: catName,
+          color: catColor,
+          limit: Number(catLimit),
+          month,
+        })
+      );
     }
     setIsModalOpen(false);
   };
@@ -51,8 +72,8 @@ export default function BudgetTable() {
   const handleBack = () => window.history.back();
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-gray-50">
-      {/* Header */}
+    <div className="min-h-screen pb-20 p-4 sm:p-6 md:p-8 bg-gray-50">
+      
       <div className="flex flex-col md:flex-row items-center justify-between mb-4 sm:mb-6 gap-3">
         <button
           onClick={handleBack}
@@ -73,7 +94,7 @@ export default function BudgetTable() {
         </button>
       </div>
 
-      {/* Month Selector */}
+     
       <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
         <label className="font-medium text-gray-700">Select Month:</label>
         <input
@@ -86,32 +107,52 @@ export default function BudgetTable() {
 
       {loading && <p className="text-center text-gray-500">Loading...</p>}
 
-      {/* Responsive Table */}
+    
       <div className="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">
         <table className="w-full min-w-[600px] table-auto">
           <thead className="bg-gray-100">
             <tr>
               {["Category", "Color", "Limit", "Spent", "Remaining", "Actions"].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-gray-700 text-xs sm:text-sm uppercase tracking-wider">
+                <th
+                  key={h}
+                  className="px-4 py-3 text-left text-gray-700 text-xs sm:text-sm uppercase tracking-wider"
+                >
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
+
           <tbody className="divide-y divide-gray-100">
             {summary.map((cat) => {
               const remaining = cat.limit - cat.spent;
+
               return (
                 <tr key={cat._id} className="hover:bg-gray-50 transition">
-                  <td className="px-4 py-3 text-xs sm:text-sm font-medium text-gray-800">{cat.name}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: cat.color }} />
+                  <td className="px-4 py-3 text-xs sm:text-sm font-medium text-gray-800">
+                    {cat.name}
                   </td>
+
+                  <td className="px-4 py-3">
+                    <span
+                      className="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded-full"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                  </td>
+
                   <td className="px-4 py-3 text-xs sm:text-sm">₹{cat.limit}</td>
-                  <td className="px-4 py-3 text-xs sm:text-sm text-gray-800">₹{cat.spent}</td>
-                  <td className={`px-4 py-3 text-xs sm:text-sm font-semibold ${remaining < 0 ? "text-red-600" : "text-green-600"}`}>
+                  <td className="px-4 py-3 text-xs sm:text-sm text-gray-800">
+                    ₹{cat.spent}
+                  </td>
+
+                  <td
+                    className={`px-4 py-3 text-xs sm:text-sm font-semibold ${
+                      remaining < 0 ? "text-red-600" : "text-green-600"
+                    }`}
+                  >
                     ₹{remaining}
                   </td>
+
                   <td className="px-4 py-3 flex flex-wrap gap-2">
                     <button
                       onClick={() => openEditModal(cat)}
@@ -119,6 +160,7 @@ export default function BudgetTable() {
                     >
                       <Edit2 size={14} /> Edit
                     </button>
+
                     <button
                       onClick={() => dispatch(deleteCategory(cat._id))}
                       className="px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200 transition text-xs sm:text-sm"
@@ -133,14 +175,21 @@ export default function BudgetTable() {
         </table>
       </div>
 
-      {/* Modal */}
+     
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-2">
           <div className="bg-white rounded-xl p-4 sm:p-6 w-full max-w-md shadow-lg relative">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+            >
               <X size={18} />
             </button>
-            <h2 className="text-lg sm:text-xl font-bold mb-4">{modalMode === "add" ? "Add Category" : "Edit Category"}</h2>
+
+            <h2 className="text-lg sm:text-xl font-bold mb-4">
+              {modalMode === "add" ? "Add Category" : "Edit Category"}
+            </h2>
+
             <div className="flex flex-col gap-3">
               <input
                 type="text"
@@ -149,12 +198,14 @@ export default function BudgetTable() {
                 onChange={(e) => setCatName(e.target.value)}
                 className="border rounded px-3 py-2 w-full focus:ring-1 focus:ring-green-500 focus:outline-none"
               />
+
               <input
                 type="color"
                 value={catColor}
                 onChange={(e) => setCatColor(e.target.value)}
                 className="w-16 h-10 p-0 border rounded cursor-pointer"
               />
+
               <input
                 type="number"
                 placeholder="Limit"
@@ -162,6 +213,7 @@ export default function BudgetTable() {
                 onChange={(e) => setCatLimit(e.target.value)}
                 className="border rounded px-3 py-2 w-full focus:ring-1 focus:ring-green-500 focus:outline-none"
               />
+
               <button
                 onClick={handleSave}
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition mt-2"
@@ -172,6 +224,29 @@ export default function BudgetTable() {
           </div>
         </div>
       )}
+
+   
+      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t flex justify-around py-2 sm:hidden">
+        <button className="flex flex-col items-center text-gray-700">
+          <Home size={22} />
+          <span className="text-xs">Dashboard</span>
+        </button>
+
+        <button className="flex flex-col items-center text-gray-700">
+          <PlusCircle size={22} />
+          <span className="text-xs">Add</span>
+        </button>
+
+        <button className="flex flex-col items-center text-gray-700">
+          <PieChart size={22} />
+          <span className="text-xs">Reports</span>
+        </button>
+
+        <button className="flex flex-col items-center text-gray-700">
+          <Settings size={22} />
+          <span className="text-xs">Settings</span>
+        </button>
+      </div>
     </div>
   );
 }

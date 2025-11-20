@@ -28,6 +28,11 @@ export default function CategorySettings() {
     setOpenModal(true);
   };
 
+  const handleDelete = async (id) => {
+    await dispatch(deleteCategory(id));
+    dispatch(fetchCategorySummary(month)); // refresh table after delete
+  };
+
   return (
     <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-gray-100">
       {/* Header */}
@@ -96,7 +101,7 @@ export default function CategorySettings() {
                       <Edit size={16} />
                     </button>
                     <button
-                      onClick={() => dispatch(deleteCategory(cat._id))}
+                      onClick={() => handleDelete(cat._id)}
                       className="text-red-600 hover:text-red-800 transition"
                     >
                       <Trash2 size={16} />
@@ -111,7 +116,13 @@ export default function CategorySettings() {
 
       {/* Category Modal */}
       {openModal && (
-        <CategoryModal open={openModal} onClose={() => setOpenModal(false)} category={editCat} />
+        <CategoryModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          category={editCat}
+          month={month}
+          refreshSummary={() => dispatch(fetchCategorySummary(month))} // pass refresh func
+        />
       )}
     </div>
   );

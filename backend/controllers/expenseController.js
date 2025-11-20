@@ -9,15 +9,15 @@ export const addExpense = async (req, res) => {
     if (!amount || !categoryId)
       return res.status(400).json({ msg: "All fields required" });
 
-    // Find category to check limit
+  
     const category = await Category.findById(categoryId);
 
     if (!category) {
       return res.status(404).json({ msg: "Category not found" });
     }
 
-    // Find all expenses inside this category (current month)
-    const month = category.month; // e.g., "2025-06"
+   
+    const month = category.month; 
     const start = new Date(`${month}-01`);
     const end = new Date(`${month}-31`);
 
@@ -41,12 +41,12 @@ export const addExpense = async (req, res) => {
 
     const status = newSpent > category.limit ? "over" : "within";
 
-    // Create expense
+ 
     const expense = await Expense.create({
       amount,
       categoryId,
       date: date || new Date(),
-      userId: req.user._id, // IMPORTANT
+      userId: req.user._id, 
     });
 
     return res.json({

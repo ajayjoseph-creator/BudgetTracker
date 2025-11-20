@@ -11,14 +11,14 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.expense);
 
-  // Expense form
+
   const [form, setForm] = useState({
     category: "",
     amount: "",
     date: new Date().toISOString().split("T")[0],
   });
 
-  // Category form
+
   const [addingCategory, setAddingCategory] = useState(false);
   const [newCat, setNewCat] = useState({
     name: "",
@@ -30,7 +30,7 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Save Expense
+
   const handleSave = async () => {
     if (!form.category || !form.amount) {
       return toast.error("Please fill all fields");
@@ -38,7 +38,7 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
 
     const expenseData = {
       amount: form.amount,
-      categoryId: form.category, // 🔹 send categoryId to backend
+      categoryId: form.category,
       date: form.date,
     };
 
@@ -54,14 +54,14 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
       dispatch(fetchCategorySummary(month));
       onClose();
 
-      // Clear form
+    
       setForm({ category: "", amount: "", date: new Date().toISOString().split("T")[0] });
     } else {
       toast.error("Failed to add expense");
     }
   };
 
-  // Save Category
+ 
   const saveCategory = async () => {
     if (!newCat.name || !newCat.limit) {
       return toast.error("All category fields required");
@@ -73,10 +73,10 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
       toast.success("Category added!");
       setAddingCategory(false);
 
-      // Clear
+     
       setNewCat({ name: "", limit: "", color: "#4f46e5" });
 
-      // Refresh categories
+     
       dispatch(fetchCategorySummary(month));
     }
   };
@@ -85,14 +85,14 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-xl relative">
 
-        {/* Close Button */}
+     
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500">
           <X size={22} />
         </button>
 
         <h2 className="text-xl font-semibold mb-4">Add Expense</h2>
 
-        {/* Category Dropdown */}
+    
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Category
         </label>
@@ -120,7 +120,7 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
           </button>
         </div>
 
-        {/* Amount */}
+     
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Amount
         </label>
@@ -133,7 +133,7 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
           className="w-full border p-2 rounded mb-4"
         />
 
-        {/* Date */}
+       
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Date
         </label>
@@ -145,7 +145,7 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
           className="w-full border p-2 rounded mb-6"
         />
 
-        {/* Save Expense */}
+        
         <button
           onClick={handleSave}
           disabled={loading}
@@ -155,7 +155,6 @@ export default function AddExpenseModal({ open, onClose, categories, month }) {
         </button>
       </div>
 
-      {/* Category Add Small Modal */}
       {addingCategory && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[60]">
           <div className="bg-white p-5 rounded-xl w-80 shadow-lg">

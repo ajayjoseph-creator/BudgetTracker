@@ -65,7 +65,7 @@ export const getCategorySummary = async (req, res) => {
 };
 
 
-// Update category (user-specific)
+// Update category 
 export const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -74,7 +74,7 @@ export const updateCategory = async (req, res) => {
     if (!name || !color || !limit)
       return res.status(400).json({ msg: "All fields required" });
 
-    // only allow update if category belongs to logged-in user
+    
     const category = await Category.findOneAndUpdate(
       { _id: id, userId: req.user._id },
       { name, color, limit },
@@ -89,12 +89,12 @@ export const updateCategory = async (req, res) => {
   }
 };
 
-// Delete category (user-specific)
+
 export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // only allow delete if category belongs to logged-in user
+    
     const category = await Category.findOneAndDelete({ _id: id, userId: req.user._id });
 
     if (!category) return res.status(404).json({ msg: "Category not found" });

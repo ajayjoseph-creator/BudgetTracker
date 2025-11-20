@@ -11,7 +11,7 @@ import auth from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.post("/", auth, addCategory);
-router.get("/summary",auth, getCategorySummary);  // fetchCategorySummary dispatch cheyyumbo call ayi
+router.get("/summary",auth, getCategorySummary);  
 router.put("/:id", auth, updateCategory);
 router.delete("/:id", auth, deleteCategory);
 

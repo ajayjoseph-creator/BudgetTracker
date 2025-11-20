@@ -15,7 +15,6 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-
 /* ------------------------- Fetch category summary (monthly) ------------------------- */
 export const fetchCategorySummary = createAsyncThunk(
   "category/fetchSummary",
@@ -72,16 +71,13 @@ export const deleteCategory = createAsyncThunk(
 /* ------------------------- Slice ------------------------- */
 const categorySlice = createSlice({
   name: "category",
-
   initialState: {
     categories: [],
     summary: [],
     loading: false,
     error: null,
   },
-
   reducers: {},
-
   extraReducers: (builder) => {
     /* ------------------------- Fetch All ------------------------- */
     builder
@@ -115,6 +111,7 @@ const categorySlice = createSlice({
       .addCase(addCategory.fulfilled, (state, action) => {
         state.loading = false;
         state.categories.push(action.payload);
+        state.summary.push(action.payload); // also push to summary for current month
         toast.success("Category added!");
       })
       .addCase(addCategory.rejected, (state, action) => {
@@ -128,9 +125,15 @@ const categorySlice = createSlice({
       .addCase(updateCategory.pending, (state) => { state.loading = true; })
       .addCase(updateCategory.fulfilled, (state, action) => {
         state.loading = false;
+
+        // update both categories and summary arrays
         state.categories = state.categories.map((cat) =>
           cat._id === action.payload._id ? action.payload : cat
         );
+        state.summary = state.summary.map((cat) =>
+          cat._id === action.payload._id ? action.payload : cat
+        );
+
         toast.success("Category updated!");
       })
       .addCase(updateCategory.rejected, (state, action) => {
@@ -145,6 +148,7 @@ const categorySlice = createSlice({
       .addCase(deleteCategory.fulfilled, (state, action) => {
         state.loading = false;
         state.categories = state.categories.filter((cat) => cat._id !== action.payload.id);
+        state.summary = state.summary.filter((cat) => cat._id !== action.payload.id);
         toast.success(action.payload.msg);
       })
       .addCase(deleteCategory.rejected, (state, action) => {

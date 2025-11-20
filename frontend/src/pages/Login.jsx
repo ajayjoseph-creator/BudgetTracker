@@ -48,7 +48,7 @@ const navigate=useNavigate()
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
+        
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email address
@@ -67,7 +67,7 @@ const navigate=useNavigate()
             </div>
           </div>
 
-          {/* Password */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -89,7 +89,7 @@ const navigate=useNavigate()
 
          
 
-          {/* Button */}
+          
           <button
             type="submit"
             disabled={loading}
@@ -102,7 +102,7 @@ const navigate=useNavigate()
 
          
 
-          {/* Register Link */}
+      
           <p className="text-center text-sm text-gray-600 mt-4">
             Don't have an account?{" "}
             <button
