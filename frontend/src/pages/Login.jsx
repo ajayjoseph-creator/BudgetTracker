@@ -77,8 +77,9 @@ const navigate=useNavigate()
               <input
                 type="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder="enter password"
                 value={form.password}
+                autoComplete="current-password"
                 onChange={handleChange}
                 className="w-full pl-10 p-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 outline-none"
                 required
