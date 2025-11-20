@@ -9,8 +9,13 @@ import categoryRoutes from './routes/categoryRoutes.js'
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  "https://budget-tracker-beta-lime.vercel.app",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: ["https://budget-tracker-beta-lime.vercel.app",'http://localhost:5173'],
+  origin: allowedOrigins,
   credentials: true,               
 }));
 app.use(express.json());
